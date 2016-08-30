@@ -1,0 +1,1 @@
+g++ -O2 -std=c++14 -Wall -o build/Chatsys.o  src/ChatSys.cpp
