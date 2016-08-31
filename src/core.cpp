@@ -54,6 +54,7 @@ std::shared_ptr<machine::tokens> core::core::lexer(std::string input_str)
                     pTokens->emplace_back((map_it.first + std::string(":") + arr_it).c_str());
                     emplaced = true;
                     break;
+                    
                 }
             }
             if (emplaced)
