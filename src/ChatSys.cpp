@@ -1,9 +1,23 @@
 #include "global.h"
+#include <cstring>
 
-int main()
+
+int main(int argc, char *argv[])
 {
-    core::core bot;
+    if (argc == 1)
+    {
+        std::cout << "ChatSys [database] [options]" << std::endl;
+        std::cout << " --debug  - print debug info " << std::endl;
+        return 0;
+    }
+ 
+    if ((argc > 2) && (!strcmp(argv[2], "--debug")))
+        global::dbg = true;
     
+    core::core bot = core::core(std::string(argv[1]));
+    
+ 
+       
     std::string input, output;
     
     for(;;)
@@ -15,7 +29,7 @@ int main()
         if (inp_tokens != nullptr)
         {
             // transform input tokens to output tokens
-            std::shared_ptr<machine::tokens> outp_tokens =
+            auto outp_tokens =
                     bot.understand(inp_tokens); 
             if (outp_tokens != nullptr)
             {

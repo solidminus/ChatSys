@@ -11,8 +11,6 @@ namespace machine
     public:
         
         void emplace_back(const char *str); // wrapper for std::vector::emplace_back()
-        
-    private:
         std::vector<std::string> token_vector;
     };
 }
