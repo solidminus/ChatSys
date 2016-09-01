@@ -1,6 +1,6 @@
 #include "global.h"
 
-
+#include <cstring>
 
 
 core::core::core(std::string filename)
@@ -11,6 +11,13 @@ core::core::core(std::string filename)
     this->wd.load_data(std::move(filename));
 }
 
+
+void printToken(std::shared_ptr<machine::tokens> &ref_token)
+{
+    for(auto in_v : ref_token->token_vector)
+            std::cout << in_v << "->";
+        std::cout << std::endl;
+}
 
 std::shared_ptr<machine::tokens> core::core::lexer(std::string input_str)
 {
@@ -36,7 +43,7 @@ std::shared_ptr<machine::tokens> core::core::lexer(std::string input_str)
         auto pWord = pStr;
         
         
-        while((pWord.base()[0] != ' ') && (pWord.base()[0] != '\0'))
+        while((isalpha(pWord.base()[0])) && (pWord.base()[0] != '\0'))
         {
             pWord++;
         }
@@ -51,7 +58,9 @@ std::shared_ptr<machine::tokens> core::core::lexer(std::string input_str)
             {
                 if (arr_it == *word)
                 {
-                    pTokens->emplace_back((map_it.first + std::string(":") + arr_it).c_str());
+                    pTokens->emplace_back((map_it.first + std::string(":")
+                        + arr_it).c_str());
+                    
                     emplaced = true;
                     break;
                     
@@ -65,30 +74,42 @@ std::shared_ptr<machine::tokens> core::core::lexer(std::string input_str)
 
     }
     
-    if (global::dbg)
-    {
-        for(auto in_v : pTokens->token_vector)
-            std::cout << in_v << "->";
-        std::cout << std::endl;
-    }
-    
     return pTokens; 
 }
 
 std::shared_ptr<machine::tokens> core::core::understand
-        (std::shared_ptr<machine::tokens>)
+        (std::shared_ptr<machine::tokens> &ref_tokens)
 {    
     
     global::debug dbg(global::dbg);
     
     dbg.output("core::understand() entered");    
     
-    std::cout << "core::understand in develop" << std::endl;
-    std::shared_ptr<machine::tokens> p(nullptr);
-    return p;    
+    dbg.output("core::understand() got input token vector: ");
+    if (global::dbg)
+    {
+        printToken(ref_tokens);
+    }
+    
+    std::shared_ptr<machine::tokens> output_tokens(new machine::tokens);
+        
+    patterns::recognizer AI;
+    
+    auto pattern = AI.recognize(ref_tokens);
+    
+    if (pattern.first == std::string("404"))
+    {
+        dbg.output("core::understand(): can not recognize pattern!");
+        output_tokens = nullptr;
+        return output_tokens;
+    }
+    
+    dbg.output("core::understand(): found a pattern: " + pattern.first);
+    
+    return output_tokens;    
 }
 
-std::string core::core::build(std::shared_ptr<machine::tokens>)
+std::string core::core::build(std::shared_ptr<machine::tokens> &ref_tokens)
 {
     
     global::debug dbg(global::dbg);

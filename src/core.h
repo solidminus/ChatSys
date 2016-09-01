@@ -28,10 +28,10 @@ namespace core
         
         // reform input token to ouput token
         std::shared_ptr<machine::tokens> understand(
-            std::shared_ptr<machine::tokens>); 
+            std::shared_ptr<machine::tokens>& ref_tokens); 
         
         // build output string from output token
-        std::string build(std::shared_ptr<machine::tokens>);
+        std::string build(std::shared_ptr<machine::tokens>& ref_tokens);
         
         
         

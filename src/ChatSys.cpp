@@ -41,8 +41,8 @@ int main(int argc, char *argv[])
                     std::cerr << "from main.cpp: core::build error" <<
                             std::endl;
             } else
-                std::cerr << "from main.cpp: core::understand error" <<
-                        std::endl;
+                std::cout << "Bot: Sorry, i can not understand you..."
+                        << std::endl;
         } else
             std::cerr << "from main.cpp: core::lexer error" << std::endl;
         
